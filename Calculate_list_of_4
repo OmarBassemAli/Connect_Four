@@ -1,0 +1,16 @@
+def calculate_list_of_4(list_of_4, the_piece):
+    value = 0
+    opposite_piece = 1
+    if the_piece == 1:
+        opposite_piece = 2
+
+    if list_of_4.count(the_piece) == 4: # if list of 4 has 4 of the same piece
+        value += 100  # increase value by 100
+    elif list_of_4.count(the_piece) == 3 and list_of_4.count(0) == 1: # if list of 4 has 3 of same piece and one empty cell
+        value += 5  # increase value by 5
+    elif list_of_4.count(the_piece) == 2 and list_of_4.count(0) == 2: # if list of 4 has 2 of same piece and two empty cell
+        value += 2  # increase value by 2
+    if list_of_4.count(opposite_piece) == 3 and list_of_4.count(0) == 1: # if list of 4 has 3 of opponent piece and one empty cell
+        value -= 4  # decrease value
+       
+    return value
