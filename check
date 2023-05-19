@@ -1,0 +1,16 @@
+# put piece in specific row and column
+def set_piece(connect_4_board, row, column, the_piece):
+    connect_4_board[row][column] = the_piece
+
+# checks if the top cell of the column is empty = the column is valid
+def valid_column(connect_4_board, column):
+    if connect_4_board[num_of_rows - 1][column] == 0:
+        return True
+    else:
+        return False
+
+# return first empty cell in a column
+def return_empty_cell(connect_4_board, column):
+    for row in range(num_of_rows):
+        if connect_4_board[row][column] == 0:
+            return row
