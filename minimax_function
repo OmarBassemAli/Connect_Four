@@ -1,0 +1,46 @@
+# minimax function return the best column according to minimax + alpha-beta pruning
+def minimax(connect_4_board, the_depth, alpha_value, beta_value, max_player): # take board, depth, alpha, beta, max or min player as parameters
+    available_columns = get_available_columns(connect_4_board) # get available columns of the board
+    is_game_end = check_if_win_or_draw(connect_4_board) # check if game state is win or draw
+    if the_depth == 0 or is_game_end:
+        if is_game_end:
+            if check_if_win(connect_4_board, 2): # check if AI player won
+                return None, 100000000000000 # return a very high number to favor this column for AI
+            elif check_if_win(connect_4_board, 1):  # check if computer won
+                return None, -10000000000000 # return a very low number to favor this column for computer
+            else: # Game is over, no more valid moves
+                return None, 0
+        else: # Depth is zero
+            return None, calculate_board_value(connect_4_board, 2)
+    if max_player: # if maximizing player is true
+        value = -math.inf
+        column = random.choice(available_columns)
+        for col in available_columns: # iterate on all valid columns in the board
+            row = return_empty_cell(connect_4_board, col) # return the first empty cell in the column
+            b_copy = copy.deepcopy(connect_4_board) # make a copy of the board to try pieces in
+            set_piece(b_copy, row, col, 2) # put piece in the board
+            new_score = minimax(b_copy, the_depth - 1, alpha_value, beta_value, False)[1] # put the value in the new_score variable
+            if new_score > value: # if new score is higher than value, set value to the new score
+                value = new_score
+                column = col
+            alpha_value = max(alpha_value, value) # set alpha value to the bigger between alpha value and value
+            if alpha_value >= beta_value: # if alpha value greater than beta,
+                break                       #this is a move better than the beta player has found
+                                            # so no need to complete searching and break the loop
+        return column, value
+
+    else:  # Min player
+        value = math.inf
+        column = random.choice(available_columns)
+        for col in available_columns:  # iterate on all valid columns in the board
+            row = return_empty_cell(connect_4_board, col) # return the first empty cell in the column
+            b_copy = copy.deepcopy(connect_4_board) # make a copy of the board to try pieces in
+            set_piece(b_copy, row, col, 1) # put piece in the board
+            new_score = minimax(b_copy, the_depth - 1, alpha_value, beta_value, True)[1] # put the value in the new_score variable
+            if new_score < value: # if new score is lower than value, set value to the new score
+                value = new_score
+                column = col
+            beta_value = min(beta_value, value) # set beta value to the smaller between beta value and value
+            if alpha_value >= beta_value: # if alpha value greater than beta,
+                break                     #this is a move better than the beta player has found
+        return column, value              # so no need to complete searching and break the loop
