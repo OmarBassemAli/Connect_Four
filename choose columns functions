@@ -1,0 +1,23 @@
+# return the columns that are not full to the top
+def get_available_columns(connect_4_board):
+    available_columns = [] # list of available columns
+    for column in range(num_of_columns):
+        if valid_column(connect_4_board, column): # check if column is valid
+            available_columns.append(column) # append the available column to the list
+    return available_columns
+
+# return a valid column
+def choose_column(connect_4_board, the_piece):
+    available_columns = get_available_columns(connect_4_board) # get all available columns in a list
+    best_score = -999999999999  # best score is initially -99999999
+    best_col = random.choice(available_columns)
+    for col in available_columns:
+        row = return_empty_cell(connect_4_board, col)  # return the first empty row in the column
+        temp_board = copy.deepcopy(connect_4_board)  # make a copy of the board to try the pieces in
+        set_piece(temp_board, row, col, the_piece) # put the piece in the board
+        score = calculate_board_value(temp_board, the_piece) # calculate the total score of the board
+        if score > best_score:  # if the score is higher than the best score, the new score is set as the best score
+            best_score = score
+            best_col = col
+    return best_col
+# return the column of the highest board score
