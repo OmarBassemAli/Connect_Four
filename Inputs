@@ -1,0 +1,30 @@
+while not game_end:
+    display_board(connect_4_board)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    # Computer Input
+    if turn == 0:
+        column = choose_column(connect_4_board, 1)  # computer input without minimax
+        if valid_column(connect_4_board, column):  # if column not full to top
+            row = return_empty_cell(connect_4_board, column)  # get first empty cell in the row
+            set_piece(connect_4_board, row, column, 1)  # put the piece in the board
+
+            if check_if_win(connect_4_board, 1):  # check if the current board is a win state
+                game_end = True  # set the game end to exit the while loop
+                display_board(connect_4_board)  # show the full board
+                print("Computer Victory")
+
+    # AI Input
+    else:
+        column, minimax_score = minimax(connect_4_board, depth, -math.inf, math.inf, True)  # Ai input using minimax + alpha beta
+        if valid_column(connect_4_board, column):  # if column not full to top
+            row = return_empty_cell(connect_4_board, column)  # get first empty cell in the row
+            set_piece(connect_4_board, row, column, 2)  # put the piece in the board
+
+            if check_if_win(connect_4_board, 2):  # check if the current board is a win state
+                game_end = True  # set the game end to exit the while loop
+                display_board(connect_4_board)  # show the full board
+                print("AI Victory")
+
+    turn += 1
+    turn = turn % 2
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
