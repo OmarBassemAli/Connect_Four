@@ -1,0 +1,75 @@
+# checks if 4 adjacent cells contain the same piece (horizontal-vertical-diagonals)
+def check_if_win(connect_4_board, the_piece):
+    # Check horizontally
+    for column in range(num_of_columns - 3):  # removes 3 columns from right
+        for row in range(num_of_rows):
+            if connect_4_board[row][column] == the_piece and connect_4_board[row][column + 1] == the_piece and connect_4_board[row][column + 2] == the_piece and connect_4_board[row][column + 3] == the_piece:
+                return True
+            # return true if 4 horizontal are same piece
+
+    # Check vertically
+    for column in range(num_of_columns):
+        for row in range(num_of_rows - 3):  # remove 3 rows from top of the board
+            if connect_4_board[row][column] == the_piece and connect_4_board[row + 1][column] == the_piece and connect_4_board[row + 2][column] == the_piece and connect_4_board[row + 3][column] == the_piece:
+                return True
+            # return true if 4 vertical are same piece
+
+    # Check in diagonals
+    for column in range(num_of_columns - 3):  # removes 3 columns from right
+        for row in range(num_of_rows - 3):  # remove 3 rows from top of the board
+            if connect_4_board[row][column] == the_piece and connect_4_board[row + 1][column + 1] == the_piece and connect_4_board[row + 2][column + 2] == the_piece and connect_4_board[row + 3][column + 3] == the_piece:
+                return True
+            # return true if 4 diagonal are same piece
+
+    for column in range(num_of_columns - 3):  # removes 3 columns from right
+        for row in range(3, num_of_rows):   # remove 3 rows from bottom
+            if connect_4_board[row][column] == the_piece and connect_4_board[row - 1][column + 1] == the_piece and connect_4_board[row - 2][column + 2] == the_piece and connect_4_board[row - 3][column + 3] == the_piece:
+                return True
+
+
+
+# calculate the value of the whole board for each column by dividing the board to lists of 4 pieces and give each list value
+# and sums the total values and return it
+def calculate_board_value(connect_4_board, the_piece):
+# create a list for the middle column and multiply the number of pieces in it by 3 to increase the value of the board
+# to increase its value according to the number of pieces in the middle column
+
+    value = 0
+    middle_column = []
+    for i in range(len(connect_4_board)):
+        middle_column.append(int(connect_4_board[i][num_of_columns // 2]))
+
+    num_of_middle = middle_column.count(the_piece)
+    value += num_of_middle * 3
+
+    # calculate the value horizontal by calculating each 4 cells next to each other horizontally
+    for r in range(num_of_rows):
+        row_array = [int(i) for i in connect_4_board[r]]
+
+        for c in range(num_of_columns - 3):
+            window = row_array[c:c + 4]
+            value += calculate_list_of_4(window, the_piece)
+
+    # calculate the value vertical by calculating each 4 cells next to each other vertically
+    for c in range(num_of_columns):
+        col_array = []
+        for r in range(num_of_rows):
+            col_array.append(int(connect_4_board[r][c]))
+
+        for r in range(num_of_rows - 3):
+            window = [col_array[r], col_array[r + 1], col_array[r + 2], col_array[r + 3]]
+            value += calculate_list_of_4(window, the_piece)
+
+    # calculate the value horizontal by calculating each 4 cells next to each other diagonally
+    for r in range(num_of_rows - 3):
+        for c in range(num_of_columns - 3):
+            window = [connect_4_board[r + i][c + i] for i in range(4)]
+            value += calculate_list_of_4(window, the_piece)
+
+    for r in range(num_of_rows - 3):
+        for c in range(num_of_columns - 3):
+            window = [connect_4_board[r + 3 - i][c + i] for i in range(4)]
+            value += calculate_list_of_4(window, the_piece)
+
+    return value
+# return the total value of the board

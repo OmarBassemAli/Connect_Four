@@ -1,0 +1,45 @@
+def choose_difficulty():
+    global depth # set depth as global variable
+    difficulty = difficulty_var.get()
+    if difficulty == 1: # if user chose easy, set depth to 2
+        print("Easy")
+        depth = 2
+    elif difficulty == 2: # if user chose medium, set depth to 3
+        print("Medium")
+        depth = 3
+    elif difficulty == 3: # if user chose hard, set depth to 5
+        print("Hard")
+        depth = 5
+
+# Create a new window
+window = tk.Tk()
+
+# Set the window title
+window.title("Choose Game Difficulty")
+
+# Set the window size
+window.geometry("500x300")
+
+# Create a label to prompt the user for input
+prompt_label = tk.Label(window, text="Choose a difficulty level:")
+prompt_label.pack()
+
+# Create a variable to store the selected difficulty level
+difficulty_var = tk.IntVar()
+
+# Create radio buttons for each difficulty level
+easy_button = tk.Radiobutton(window, text="Easy", variable=difficulty_var, value=1)
+easy_button.pack()
+
+medium_button = tk.Radiobutton(window, text="Medium", variable=difficulty_var, value=2)
+medium_button.pack()
+
+hard_button = tk.Radiobutton(window, text="Hard", variable=difficulty_var, value=3)
+hard_button.pack()
+
+# Create a button to submit the selected difficulty
+submit_button = tk.Button(window, text="Submit", command=choose_difficulty)
+submit_button.pack()
+
+# Run the window
+window.mainloop()
